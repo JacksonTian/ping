@@ -8,3 +8,4 @@ exports.Compress = {
 exports.Welcome = {
     file: "index.html"
 };
+exports.Timeout = 20 * 60 * 1000;
