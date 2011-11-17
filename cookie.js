@@ -3,7 +3,7 @@ exports.parse = function (cookies) {
     var pairs = cookies.split(";");
     pairs.forEach(function (pair) {
         var kv = pair.split("=");
-        map[kv[0]] = kv[1] || "";
+        map[kv[0].trim()] = kv[1] || "";
     });
     return map;
 };
