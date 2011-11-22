@@ -11,7 +11,7 @@ var zlib = require("zlib");
 var server = http.createServer(function(request, response) {
     response.setHeader("Server", "Node/V5");
     response.setHeader('Accept-Ranges', 'bytes');
-    var pathname = url.parse(request.url).pathname;console.log(pathname);
+    var pathname = url.parse(request.url).pathname;
     if (pathname.slice(-1) === "/") {
         pathname = pathname + config.Welcome.file;
     }
