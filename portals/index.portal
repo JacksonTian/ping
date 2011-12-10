@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ping Portal Mode</title>
+</head>
+<body>
+    <div id="main">
+        <h2><%=title%></h2>
+        <section>
+            <%=content%>
+        </section>
+        <aside><%=author%> posted on <%=time%></aside>
+        <div id="comments">
+            <%=section.renderAs.normal("comments", {id: [id]})%>
+        </div>
+    </div>
+    <aside id="sidebar">
+        <h3>好友</h3>
+        <div id="friends">
+            <%=section.renderAs.async("friends", {user: [user.id]})%>
+        </div>
+        <h3>最近博客</h3>
+        <div id="posts">
+            <%=section.renderAs.async("recentPosts", {user: [user.id]})%>
+        </div>
+        <h3>最近访客</h3>
+        <div id="visitors">
+            <%=section.renderAs.bigPipe("recentVisitors", {user: [user.id]})%>
+        </div>
+    </aside>
+    <footer>
+        当前在线: <%=section.renderAs.ajax("onlineUsers")%>
+    </footer>
+</body>
+</html>

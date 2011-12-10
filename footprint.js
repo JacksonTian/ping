@@ -1,4 +1,4 @@
-var footprint = exports;
+module.exports = footprint = {};
 // Default template settings, uses ASP/PHP/JSP delimiters, change the
 // following template settings to use alternative delimiters.
 var templateSettings = {
