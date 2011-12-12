@@ -34,7 +34,15 @@ Portal.postprocess = function (str, sandbox, settings) {
 
     return temp;
 };
-
+Portal.prototype.route = function (requestUrl) {
+    var portal = requestUrl.split("/")[1];
+    var pathname = portal + Portal.extension;
+    var realPath = path.join("portals", path.normalize(pathname.replace(/\.\./g, "")));
+    return {
+        "portal": portal,
+        "path": realPath
+    };
+};
 Portal.prototype.dispatch = function (request, response) {
     if (request.url == "/favicon.ico") {
         response.writeHead(404);
@@ -42,14 +50,9 @@ Portal.prototype.dispatch = function (request, response) {
         return;
     }
 
-    var portal = request.url.split("/")[1];
-    console.log(portal);
-    var pathname = portal + Portal.extension;
-    var realPath = path.join("portals", path.normalize(pathname.replace(/\.\./g, "")));
-    console.log(realPath);
+    var routeInfo = this.route(request.url);
 
     var portalView = new PortalView();
-
     portalView.all("before", "file", function (viewData, file) {
         console.log("Portal ready.");
         var sandbox = {
@@ -71,14 +74,14 @@ Portal.prototype.dispatch = function (request, response) {
 
         console.log("Preprocess done.");
     });
-    
+
     portalView.on("postprocess_done", function () {
         portalView.processAjax(response);
         portalView.processPipes(response);
     });
 
     try {
-        var model = new require("./models/" + portal);
+        var model = new require("./models/" + routeInfo.portal);
         portalView.model = model;
         model.before(function (viewData) {
             portalView.fire("before", viewData);
@@ -89,7 +92,7 @@ Portal.prototype.dispatch = function (request, response) {
         response.end("\n");
     }
 
-    fs.readFile(realPath, function (err, file) {
+    fs.readFile(routeInfo.path, function (err, file) {
         if (err) {
             response.writeHead(404, {'Content-Type': 'text/plain'});
             response.write("This request URL " + pathname + " was not found on this server.\n");
