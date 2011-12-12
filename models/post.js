@@ -10,8 +10,8 @@ model.before = function (callback) {
         callback(data);
     }, 100);
 };
-model.pipe = function (viewName, data, callback) {
+model.pipe = function (data, callback) {
     setTimeout(function () {
-        callback(viewName + "Pipe Content" + Math.random());
+        callback(data.viewName + "'s Pipe Content " + Math.random());
     }, Math.random() * 1000);
 };
