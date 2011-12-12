@@ -65,7 +65,7 @@ PortalView.prototype.getPartials = function () {
 
 
 PortalView.prototype.getPipe = function (data) {
-    var that = this
+    var that = this;
     this.model.pipe(data, function (content) {
         var script = '<script>\nPortal.bigPipe("' + data.viewName + '", "' + content + '");\n</script>';
         that.pipes.push(script);
