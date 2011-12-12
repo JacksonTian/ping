@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <title><%=title%></title>
+    <script src="http://localhost:8001/eventproxy.js"></script>
+    <script src="http://localhost:8001/portal_client.js"></script>
+    <script src="http://localhost:8001/post/index.js"></script>
 </head>
 <body>
     <div id="main">
@@ -10,7 +13,7 @@
         <section>
             <%=content%>
         </section>
-        <aside><%=author%> posted on <%=time%></aside>
+        <aside>By <%=author%> on <%=time%></aside>
         <div id="comments">
             <%view.partial("comments");%>
         </div>
@@ -18,19 +21,19 @@
     <aside id="sidebar">
         <h3>好友</h3>
         <div id="friends">
-            <%view.async("friends");%>
+            <%view.partial("friends");%>
         </div>
         <h3>最近博客</h3>
-        <div id="posts">
-            <%view.async("recentPosts");%>
+        <div id="recentPosts">
+            <%view.bigPipe("recentPosts");%>
         </div>
         <h3>最近访客</h3>
         <div id="visitors">
-            <%view.bigPipe("recentVisitors");%>
+            <%view.bigPipe("visitors");%>
         </div>
     </aside>
     <footer>
-        当前在线: <%view.ajax("onlineUsers");%>
+        当前在线: <%view.ajax("onlineUsers");%><span id="onlineUsers">loading</span>
     </footer>
 </body>
 </html>

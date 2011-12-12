@@ -71,15 +71,15 @@ Asset.prototype.dispatch = function (request, response) {
                                 response.setHeader("Content-Range", "bytes " + range.start + "-" + range.end + "/" + stats.size);
                                 response.setHeader("Content-Length", (range.end - range.start + 1));
                                 var raw = fs.createReadStream(realPath, {"start": range.start, "end": range.end});
-                                compressHandle(raw, 206, "Partial Content");
+                                compressHandle(raw, 206);
                             } else {
                                 response.removeHeader("Content-Length");
-                                response.writeHead(416, "Request Range Not Satisfiable");
+                                response.writeHead(416);
                                 response.end();
                             }
                         } else {
                             var raw = fs.createReadStream(realPath);
-                            compressHandle(raw, 200, "Ok");
+                            compressHandle(raw, 200);
                         }
                     }
                 }

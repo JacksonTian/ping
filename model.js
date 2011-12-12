@@ -16,5 +16,5 @@ Model.prototype.get = function (key, callback) {
     }
 };
 Model.prototype.register = function (key, callback) {
-    
+    this.keys[key] = callback;
 };
