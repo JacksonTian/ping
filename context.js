@@ -1,6 +1,6 @@
 var path = require("path");
 var fs = require("fs");
-var footprint = require("./footprint");
+var footprint = require("footprint");
 
 var Context = function (request, response, session, framework) {
     this.request = request;
