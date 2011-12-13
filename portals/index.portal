@@ -18,11 +18,11 @@
     <aside id="sidebar">
         <h3>好友</h3>
         <div id="friends">
-            <%view.async("friends");%>
+            <%view.partial("friends");%>
         </div>
         <h3>最近博客</h3>
         <div id="posts">
-            <%view.async("recentPosts");%>
+            <%view.partial("recentPosts");%>
         </div>
         <h3>最近访客</h3>
         <div id="visitors">
