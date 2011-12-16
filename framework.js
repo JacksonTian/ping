@@ -43,55 +43,62 @@ Framework.prototype.dispatch = function (request, response) {
     }
 };
 
+
 // Add get parse supports
-Framework.prototype.enableGet = function (request, response) {
-    var _urlMap;
-    request.get = function (key) {
-        if (!_urlMap) {
-            _urlMap = url.parse(request.url, true);
+Framework.prototype.enableGet = function () {
+    http.IncomingMessage.prototype.get = function (key) {
+        if (!this._urlMap) {
+            this._urlMap = url.parse(this.url, true);
         }
-        return _urlMap.query[key];
+        return this._urlMap.query[key];
     };
 };
 
 // Add cookie parse and set supports
 Framework.prototype.enableCookie = function (request, response) {
-    var _cookieMap;
-    request.cookie = function (key) {
-        if (!_cookieMap) {
-            _cookieMap = cookie.parse(request.headers.cookie || "");
-        }
-        return _cookieMap[key];
+    http.IncomingMessage.prototype.cookie = function () {
+        this.cookie = function (key) {
+            if (!this._cookieMap) {
+                this._cookieMap = cookie.parse(this.headers.cookie || "");
+            }
+            return this._cookieMap[key];
+        };
     };
-    var _setCookieMap = {};
-    response.setCookie = function (cookieObj) {
-        _setCookieMap[cookieObj.key] = cookie.stringify(cookieObj);
+
+    http.ServerResponse.prototype.setCookie = function (cookieObj) {
+        if (!this._setCookieMap) {
+            this._setCookieMap = {};
+        }
+        this._setCookieMap[cookieObj.key] = cookie.stringify(cookieObj);
         var returnVal = [];
-        for(var key in _setCookieMap) {
-            returnVal.push(_setCookieMap[key]);
+        for(var key in this._setCookieMap) {
+            returnVal.push(this._setCookieMap[key]);
         }
 
-        response.setHeader("Set-Cookie", returnVal.join(", "));
+        this.setHeader("Set-Cookie", returnVal.join(", "));
     };
 };
 
 // Add post parse supports
-Framework.prototype.enablePost = function (request, response) {
-    if (request.method === "POST") {
-        var _postData = "",
-            _postMap = "";
+Framework.prototype.enablePost = function () {
+    http.IncomingMessage.prototype.post = function () {
+        if (!this._postMap) {
+            this._postMap = qs.parse(this.postData);
+        }
+        return this._postMap[key];
+    };
+};
 
-        request.on('data', function (chunk) {
+// Recept post body.
+Framework.prototype.recept = function (request) {
+    if (request.method === "POST") {
+        var _postData = "";
+
+        this.on('data', function (chunk) {
             _postData += chunk;
         })
         .on("end", function () {
             request.postData = _postData;
-            request.post = function (key) {
-                if (!_postMap) {
-                    _postMap = qs.parse(_postData);
-                }
-                return _postMap[key];
-            };
         });
     }
 };

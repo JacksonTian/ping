@@ -11,6 +11,8 @@
     <div id="main">
         <h2><%=title%></h2>
         <section>
+            <%=user.name%>
+            <%=user.email%>
             <%=content%>
         </section>
         <aside>By <%=author%> on <%=time%></aside>

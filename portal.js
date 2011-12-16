@@ -14,14 +14,20 @@ Portal.templateSettings = {
 
 Portal.preprocess = function (str, sandbox, settings) {
     var c  = settings || Portal.templateSettings;
-    var temp = str.replace(c.interpolate, function (match, code) {
-        return sandbox.viewData[code] ? sandbox.viewData[code] : "The key " + code + " is undefined.";
-    }).replace(c.evaluate, function (match, code) {
-        //console.log(code);
-        var result = vm.runInNewContext(code, sandbox);
-        //console.log(result);
-        return result;
-    });
+    try {
+        var temp = str.replace(c.interpolate, function (match, code) {
+            var script = "view.viewData." + code;
+            return vm.runInNewContext(script, sandbox);
+            //return sandbox.view.viewData[code] ? sandbox.view.viewData[code] : "The key " + code + " is undefined.";
+        }).replace(c.evaluate, function (match, code) {
+            console.log(code);
+            var result = vm.runInNewContext(code, sandbox);
+            //console.log(result);
+            return result;
+        });
+    } catch (ex) {
+        return ex.stack;
+    }
 
     return temp;
 };
@@ -55,9 +61,9 @@ Portal.prototype.dispatch = function (request, response) {
     var portalView = new PortalView();
     portalView.all("before", "file", function (viewData, file) {
         console.log("Portal ready.");
+        portalView.viewData = viewData;
         var sandbox = {
-                "view": portalView,
-                "viewData": viewData
+                "view": portalView
             };
 
         var preprocessed = Portal.preprocess(file, sandbox);

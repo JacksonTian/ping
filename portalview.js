@@ -2,6 +2,7 @@ var util = require("util");
 var path = require("path");
 var fs = require("fs");
 var EventProxy = require("eventproxy").EventProxy;
+var footprint = require("footprint");
 
 var PortalView = function () {
     EventProxy.call(this);
@@ -19,6 +20,7 @@ util.inherits(PortalView, EventProxy);
  * The view name will be replaced in postprocess phase.
  */
 PortalView.prototype.partial = function (viewName, data) {
+    data = data || this.viewData;
     this.partialSeq.push({"viewName": viewName, "viewData": data});
     return "<%=" + viewName + "%>";
 };
@@ -50,8 +52,10 @@ PortalView.prototype.getPartial = function (data) {
         if (err) {
             throw err;
         } else {
-            that.partialViews[data.viewName] = view.toString("utf-8");
-            that.fire("partial_end", view.toString("utf-8"));
+            console.log(data.viewData);
+            var html = footprint.template(view.toString("utf-8"), data.viewData);
+            that.partialViews[data.viewName] = html;
+            that.fire("partial_end", html);
         }
     });
 };
@@ -85,7 +89,9 @@ PortalView.prototype.processAjax = function (response) {
         response.write(script);
     });
 };
-
+/**
+ * @description 
+ */
 PortalView.prototype.processPipes = function (response) {
     // Process sequnences
     this.pipes.forEach(function (script) {
