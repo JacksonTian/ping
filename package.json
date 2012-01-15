@@ -1,6 +1,6 @@
 {
   "author": "Jackson Tian <shyvo1987@gmail.com> (http://weibo.com/shyvo)",
-  "name": "ping",
+  "name": "node-ping",
   "description": "Web Framework based on Nodejs.",
   "version": "0.1.0",
   "homepage": "https://github.com/JacksonTian/ping",
