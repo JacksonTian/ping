@@ -1,0 +1,20 @@
+{
+  "author": "Jackson Tian <shyvo1987@gmail.com> (http://weibo.com/shyvo)",
+  "name": "ping",
+  "description": "Web Framework based on Nodejs.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/JacksonTian/ping",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JacksonTian/ping.git"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "expresso test/test.js"
+  },
+  "engines": {
+    "node": "0.6.6"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
