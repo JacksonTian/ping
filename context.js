@@ -55,7 +55,7 @@ Context.prototype.renderView = function (view, data) {
     } else {
         var filePath = path.join(__dirname, "views/", view);
 
-        path.exists(filePath, function (exists) {
+        fs.exists(filePath, function (exists) {
             if(!exists) {
                 framework.handler500(request, response, "This template file doesn't exist.");  
             } else {
