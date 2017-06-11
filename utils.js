@@ -4,15 +4,11 @@ exports.parseRange = function (str, size) {
     }
 
     var range = str.split("-"),
-        start = parseInt(range[0], 10),
+        start = parseInt(range[0].match(/\d+/)[0], 10),
         end = parseInt(range[1], 10);
 
-    // Case: -100
-    if (isNaN(start)) {
-        start = size - end;
-        end = size - 1;
     // Case: 100-
-    } else if (isNaN(end)) {
+    if (isNaN(end)) {
         end = size - 1;
     }
 
